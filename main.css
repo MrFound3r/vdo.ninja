@@ -1,16 +1,16 @@
 :root {
 	/* Discord Greys - Dark to Lighter */
-	--discord-grey-0: #121212;
-	--discord-grey-1: #1e1f22;
-	--discord-grey-2: #232428;
-	--discord-grey-3: #2c2c2d;
-	--discord-grey-4: #2e3035;
-	--discord-grey-5: #313338;
-	--discord-grey-6: #383a40;
-	--discord-grey-7: #404249; /* primary */
-	--discord-grey-8: #5e6064;
+	--discord-grey-0: #fff;
+	--discord-grey-1: #fff;
+	--discord-grey-2: #fff;
+	--discord-grey-3: #fff;
+	--discord-grey-4: #fff;
+	--discord-grey-5: #fff;
+	--discord-grey-6: #fff;
+	--discord-grey-7: #fff; /* primary */
+	--discord-grey-8: #ccc;
 
-	--discord-text: hsl( 210 calc(1 * 9.1%) 92% /1);
+	--discord-text: #000;
 
 	--darktheme-red: rgb(161, 45, 45);
 	--darktheme-blue: rgb(33, 69, 114);
@@ -32,17 +32,17 @@
 
 	/* Director v2 - General colors */
 	/* -- Links */
-	--a-dark-link: #69aadc;
-	--a-dark-visited: #69aadc;
-	--a-dark-hover: #6da5dd;
-	--a-dark-focus: #6da5dd;
-	--a-dark-active: #3a80c6;
+	--a-dark-link: #fba834;
+	--a-dark-visited: #fba834;
+	--a-dark-hover: #fba834;
+	--a-dark-focus: #fba834;
+	--a-dark-active: #fba834;
 
-	--a-darker-link: #b9dff9;
-	--a-darker-visited: #b9dff9;
-	--a-darker-hover: #048ae8;
-	--a-darker-focus: #d9e4eb;
-	--a-darker-active: #d9e4eb;
+	--a-darker-link: #fba834;
+	--a-darker-visited: #fba834;
+	--a-darker-hover: #fba834;
+	--a-darker-focus: #fba834;
+	--a-darker-active: #fba834;
 
 	--a-lighter-link: #9ed0e1;
 	--a-lighter-visited: #9ed0e1;
@@ -68,7 +68,7 @@
 	
 	/* Original colors */
 	--background-color: #141926;
-	--dark-background-color: #02050c;
+	--dark-background-color: #333a73;
 	--container-color: #373737;
 	--button-color: #2A2A2A;
 	--blue-accent: #4a4c63;
@@ -2503,10 +2503,10 @@ label {
 	font-size: 2em;
 	display: block;
 	margin: auto;
-	background-color: #5555;
+	background-color: #333a73;
 	border-radius: 30px;
 	cursor: pointer;
-	color: #636363;
+	color: #fff;
 	padding: 3px;
 	width: 100px;
 }
@@ -5554,14 +5554,14 @@ iframe.insecure {
 }
 
 body.darktheme {
-	color: white;
+	color: black;
 	scrollbar-color: #000 #333;
 }
 body.darktheme form>label{
 	color: white;
 }
 body.darktheme .column>h2{
-	color: #b6b6b6;
+	color: #212529;
 }
 body.darktheme .column {
 	border-color: rgba(255, 255, 255, 0.1);
