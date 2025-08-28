@@ -1,12 +1,12 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="./lineawesome/css/line-awesome.min.css" />
-		<link rel="stylesheet" href="./main.css" />
-		<link rel="stylesheet" href="./devices.css?ver=2" />
+		<link rel="stylesheet" href="./main.css?ver=11" />
+		<link rel="stylesheet" href="./devices.css?ver=1" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta charset="utf8" />
 	</head>
-	<body style="position:static" >
+	<body>
 		<div id="header">
 			<a
 				id="logoname"
@@ -28,7 +28,6 @@
 			<div class="notice">
 				Check for browser and camera capabilities <a href="/supports">here</a>.
 			</div>
-			
 			<div class="card">
 				<h1>🎤 Audio Inputs</h1>
 				<div id="audioInputs"></div>
@@ -41,23 +40,13 @@
 				<h1>🔉 Audio Outputs</h1>
 				<div id="audioOutputs"></div>
 			</div>
-			<div class="notice info-box">
-				<h3>🔑 Important Device Information</h3>
-				<ul>
-					<li><strong>Device IDs are security-scoped</strong> to specific origins/domains and browsers. They will appear different across domains and after clearing browser data for security reasons.</li>
-					<li><strong>Speaker/Output selection</strong> requires granting microphone permissions first. Some browsers may require additional permissions.</li>
-					<li>For iframes, add <code>allow="microphone *; camera *"</code> to enable device access.</li>
-					<li><strong>Browser compatibility:</strong> Firefox does not support audio output selection via <code>sinkId</code>. Safari added partial support in recent versions.</li>
-					<li>If device labels appear as "Default" or are missing, you need to grant media permissions before they'll become visible.</li>
-				</ul>
-			</div>
 		</div>
 		<div id="sharedDevices" style="display: none">
 			<span>Click to copy. Use this URL to preset audio/video devices.</span>
 			<span id="close" onclick="this.parentNode.style.display='none'">×</span>
 			<input id="devicesUrl" value="" />
 		</div>
-		
+
 		<script>
 			const list = [];
 			const url = new URL(document.location.origin);
@@ -217,84 +206,22 @@
 				document.execCommand("copy");
 			};
 
-			async function requestPermissions() {
-				try {
-					// Request temporary audio/video access to get device labels
-					await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-						.then(stream => {
-							// Stop all tracks immediately after getting permission
-							stream.getTracks().forEach(track => track.stop());
-						})
-						.catch(err => {
-							console.warn("Partial permission denied:", err.name);
-							// Still try to enumerate even with partial permission
-						});
-				} catch (e) {
-					console.warn("Permission request failed:", e);
-				}
-			}
-			async function enumerateDevices() {
-				try {
-					const devices = await navigator.mediaDevices.enumerateDevices();
-					
-					// If we don't have labels, request permissions and try again
-					if (devices.some(device => !device.label)) {
-						await requestPermissions();
-						const devicesWithLabels = await navigator.mediaDevices.enumerateDevices();
-						devices.forEach((device) => {
-							console.log(
-								`${device.kind}: ${device.label} id = ${device.deviceId}`
-							);
-							list.push(device);
-						});
-						prettyPrint(devicesWithLabels.filter(isAudioInput), "audioInputs");
-						prettyPrint(devicesWithLabels.filter(isAudioOutput), "audioOutputs");
-						prettyPrint(devicesWithLabels.filter(isVideoInput), "videoInputs");
-					} else {
-						// We already have labels, proceed normally
-						devices.forEach((device) => {
-							console.log(
-								`${device.kind}: ${device.label} id = ${device.deviceId}`
-							);
-							list.push(device);
-						});
-						prettyPrint(devices.filter(isAudioInput), "audioInputs");
-						prettyPrint(devices.filter(isAudioOutput), "audioOutputs");
-						prettyPrint(devices.filter(isVideoInput), "videoInputs");
-					}
-				} catch (err) {
-					console.error(`${err.name}: ${err.message}`);
-				}
-			}
-			enumerateDevices();
+			navigator.mediaDevices
+				.enumerateDevices()
+				.then((devices) => {
+					devices.forEach((device) => {
+						console.log(
+							`${device.kind}: ${device.label} id = ${device.deviceId}`
+						);
+						list.push(device);
+					});
+					prettyPrint(devices.filter(isAudioInput), "audioInputs");
+					prettyPrint(devices.filter(isAudioOutput), "audioOutputs");
+					prettyPrint(devices.filter(isVideoInput), "videoInputs");
+				})
+				.catch((err) => {
+					console.log(`${err.name}: ${err.message}`);
+				});
 		</script>
-		<style>
-			.info-box {
-				background-color: #f8f9fa;
-				border-left: 4px solid #17a2b8;
-				padding: 10px 15px;
-				margin-bottom: 20px;
-				text-align: left;
-				color: black;;
-			}
-			.info-box h3 {
-				margin-top: 0;
-				color: #17a2b8;
-			}
-			.info-box ul {
-				margin-bottom: 0;
-				padding-left: 20px;
-				color:black;
-			}
-			.info-box li {
-				margin-bottom: 5px;
-			}
-			.info-box code {
-				background-color: #e9ecef;
-				padding: 2px 4px;
-				border-radius: 3px;
-				font-family: monospace;
-			}
-		</style>
 	</body>
 </html>

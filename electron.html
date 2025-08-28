@@ -274,40 +274,8 @@
 		font-size: 30%;
 		display: inline-block;
 		color: #000A;
-		right: 3px;
-		position: absolute;
-		bottom: 0;
 	}
-#lastUrls {
-    /* Keep your original styles for the select element */
-    font-size: calc(16px + 0.3vw);
-    width: 730px;
-    height: 100%;
-    flex: 20;
-    border-radius: 10px;
-    padding: 1em;
-    background: #101520;
-    color: white;
-    cursor: pointer;
-}
 
-/* These styles target the dropdown list in Webkit browsers */
-#lastUrls::-webkit-listbox {
-    max-height: 200px !important;
-}
-
-/* For Firefox */
-#lastUrls {
-    scrollbar-width: thin;
-    scrollbar-color: #384861 #182031;
-}
-
-/* This will help force the height of the dropdown menu in many browsers */
-@supports (-moz-appearance:none) {
-    #lastUrls {
-        overflow: -moz-scrollbars-vertical;
-    }
-}
 	</style>
 </head>
 <body>
@@ -350,94 +318,26 @@
 *  tree. Alternative licencing options can be made available on request.
 *
 */
-
+var lastUrls = JSON.parse(localStorage.getItem('lastUrls'));
+if (lastUrls != undefined) {
+	document.querySelector("#changeText").value = lastUrls[0];
+	if (lastUrls.length>0){
+		lastUrls.forEach((url)=>{
+			var o = document.createElement('option');
+			o.value = url;
+			o.text = url;
+			document.querySelector("#lastUrls").appendChild(o);
+		})
+	} else {
+		document.querySelector("#history").style.display="none";
+	}
+} else {
+	document.querySelector("#history").style.display="none";
+}
 
 function setUrl(){
 	document.querySelector("#changeText").value = document.querySelector("#lastUrls").value;
 	gohere();
-}
-
-function createCustomScrollableDropdown() {
-    const originalSelect = document.querySelector('#lastUrls');
-    if (!originalSelect) return;
-    
-    // Create custom dropdown container
-    const dropdownContainer = document.createElement('div');
-    dropdownContainer.id = 'custom-lastUrls-container';
-    dropdownContainer.style.position = 'relative';
-    dropdownContainer.style.width = '730px';
-    dropdownContainer.style.flex = '20';
-    
-    // Create the dropdown header (what shows when closed)
-    const dropdownHeader = document.createElement('div');
-    dropdownHeader.id = 'custom-lastUrls-header';
-    dropdownHeader.style.fontSize = 'calc(16px + 0.3vw)';
-    dropdownHeader.style.padding = '1em';
-    dropdownHeader.style.borderRadius = '10px';
-    dropdownHeader.style.background = '#FFF';
-    dropdownHeader.style.color = '#000';
-    dropdownHeader.style.cursor = 'pointer';
-    dropdownHeader.textContent = originalSelect.options.length > 0 ? 
-                                originalSelect.options[0].text : 'History';
-    
-    // Create the dropdown list (what shows when opened)
-    const dropdownList = document.createElement('div');
-    dropdownList.id = 'custom-lastUrls-list';
-    dropdownList.style.display = 'none';
-    dropdownList.style.position = 'absolute';
-    dropdownList.style.width = '100%';
-    dropdownList.style.maxHeight = '200px';
-    dropdownList.style.overflowY = 'auto';
-    dropdownList.style.background = '#DDD';
-    dropdownList.style.borderRadius = '10px';
-    dropdownList.style.zIndex = '100';
-    
-    // Add options to the dropdown list
-    Array.from(originalSelect.options).forEach((option, index) => {
-        const item = document.createElement('div');
-        item.className = 'custom-lastUrls-item';
-        item.style.padding = '0.5em 1em';
-        item.style.cursor = 'pointer';
-        item.textContent = option.text;
-        item.dataset.value = option.value;
-        
-        if (index % 2 === 1) {
-            item.style.backgroundColor = '#FFF';
-        }
-        
-        item.addEventListener('click', function() {
-            dropdownHeader.textContent = this.textContent;
-            dropdownList.style.display = 'none';
-            
-            // Update the original select value and trigger its change event
-            originalSelect.value = this.dataset.value;
-            const event = new Event('change');
-            originalSelect.dispatchEvent(event);
-        });
-        
-        dropdownList.appendChild(item);
-    });
-    
-    // Toggle dropdown on header click
-    dropdownHeader.addEventListener('click', function() {
-        const isDisplayed = dropdownList.style.display === 'block';
-        dropdownList.style.display = isDisplayed ? 'none' : 'block';
-    });
-    
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!dropdownContainer.contains(e.target)) {
-            dropdownList.style.display = 'none';
-        }
-    });
-    
-    // Add everything to the container
-    dropdownContainer.appendChild(dropdownHeader);
-    dropdownContainer.appendChild(dropdownList);
-    
-    // Replace the original select with our custom dropdown
-    originalSelect.style.display = 'none';
-    originalSelect.parentNode.insertBefore(dropdownContainer, originalSelect);
 }
 
 function resetHistory(){
@@ -574,121 +474,10 @@ function enterPressed(event, callback){
   }
 }
 
-function checkForSpecialVideoDevices() {
-  if (navigator.userAgent.toLowerCase().indexOf(' electron/') > -1) {
-    navigator.mediaDevices.enumerateDevices().then(devices => {
-      const specialDevices = [
-        "OBS Virtual Camera",
-        "Streamlabs Desktop Virtual Webcam",
-        "vMix Video",
-        "Blackmagic",
-        "NDI Video"
-      ];
-
-      let detectedDevice = null;
-
-      for (const priorityDevice of specialDevices) {
-        for (const device of devices) {
-          if (device.kind === 'videoinput' && device.label.includes(priorityDevice)) {
-            detectedDevice = device;
-            break;
-          }
-        }
-        if (detectedDevice) break;
-      }
-
-      if (detectedDevice) {
-        createSpecialDeviceLink(detectedDevice.label);
-      }
-    }).catch(console.error);
-  }
-}
-
-function createSpecialDeviceLink(deviceLabel) {
-  const normalizedLabel = normalizeDeviceLabel(deviceLabel);
-  const link = document.createElement('a');
-  link.href = `./?vd=${normalizedLabel}&fullscreen&cleanoutput&webcam&autostart&push=JNVWFzC&bypass&ad=0&nohistory`;
-  link.textContent = `${deviceLabel} detected - Click to full-window it`;
-  link.style.position = 'fixed';
-  link.style.bottom = '10px';
-  link.style.left = '50%';
-  link.style.transform = 'translateX(-50%)';
-  link.style.backgroundColor = 'rgba(50, 50, 50, 0.7)';
-  link.style.color = '#e0e0e0';
-  link.style.padding = '8px 12px';
-  link.style.borderRadius = '20px';
-  link.style.fontSize = '14px';
-  link.style.textDecoration = 'none';
-  link.style.opacity = '0';
-  link.style.transition = 'opacity 2s ease-in-out';
-  link.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
-  link.style.fontFamily = 'Arial, sans-serif';
-  link.title = "Make this video device fully fill the window, making it perfect for screen capture.";
-
-  document.body.appendChild(link);
-  setTimeout(() => link.style.opacity = '1', 100);
-
-  // Add hover effect
-  link.onmouseenter = () => {
-    link.style.backgroundColor = 'rgba(70, 70, 70, 0.9)';
-  };
-  link.onmouseleave = () => {
-    link.style.backgroundColor = 'rgba(50, 50, 50, 0.7)';
-  };
-}
-
-function normalizeDeviceLabel(deviceName) {
-  return String(deviceName).replace(/[\W]+/g, "_").toLowerCase();
-}
-function getPermssions(e=null){
-  if (listed==true){
-    return;
-  } 
-  if (e!==null){
-    e.currentTarget.blur();
-  }
-  navigator.mediaDevices.getUserMedia({audio: true, video: false}).then((stream)=>{
-    navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(console.error);
-    stream.getTracks().forEach(track => {
-        track.stop();
-    });
-    listed=true;
-    audioOutputSelect.focus();
-    
-  }).catch(function(){
-    document.getElementById("messageDiv").innerHTML = "Failed to list available audio devices\n\nPlease ensure you allowed the microphone permissions.";
-    document.getElementById("messageDiv").style.display="block";
-    setTimeout(function(){document.getElementById("messageDiv").style.opacity="1.0";},0);
-  });
-}
-
-function preloadCSS(url) {
-  const link = document.createElement('link');
-  link.rel = 'preload';
-  link.as = 'style';
-  link.href = url;
-  document.head.appendChild(link);
-}
-
-function lazyPreloadCSS() {
-  const cssFiles = [
-    './main.css'
-  ];
-  cssFiles.forEach(preloadCSS);
-}
-
-
 
 var isMobile = false;
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){ // does not detect iPad Pros.
 	isMobile=true; // if iOS, default to H264?  meh.  let's not.
-} else {
-	// Near the end of your script, replace or add:
-	document.addEventListener('DOMContentLoaded', () => {
-	  getPermssions();
-	  checkForSpecialVideoDevices();
-	  setTimeout(lazyPreloadCSS, 2000);
-	});
 }
 // Windows can show the cursor, since it captures in a different way.
 //if (navigator.platform.indexOf("Win") != -1){
@@ -752,7 +541,7 @@ function addUrlToHistory(url){
 	}
 	if ( lastUrls[0] != url ) {
 		lastUrls.unshift(url);
-		if (lastUrls.length == 100) {
+		if (lastUrls.length == 6) {
 			lastUrls.pop();
 		}
 	}
@@ -792,25 +581,6 @@ function gohere(){
 	}
 	window.location = url;
 };
-
-var lastUrls = JSON.parse(localStorage.getItem('lastUrls'));
-if (lastUrls != undefined) {
-    document.querySelector("#changeText").value = lastUrls[0];
-    if (lastUrls.length > 0) {
-        lastUrls.forEach((url) => {
-            var o = document.createElement('option');
-            o.value = url;
-            o.text = url;
-            document.querySelector("#lastUrls").appendChild(o);
-        });
-        // Create custom dropdown after populating
-        createCustomScrollableDropdown();
-    } else {
-        document.querySelector("#history").style.display = "none";
-    }
-} else {
-    document.querySelector("#history").style.display = "none";
-}
 getPermssions();
 </script>
 </body>
