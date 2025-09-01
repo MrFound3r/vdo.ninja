@@ -82,7 +82,7 @@ var miscTranslations = { // i can replace this list from time to time from the g
     "enter-password-2": "Please enter the password below: \n\n(Note: Passwords are case-sensitive.)",
     "enter-director-password": "Please enter the director's password:\n\n(Note: Passwords are case-sensitive and you will not be alerted if it is incorrect.)",
     "password-incorrect": "The password was incorrect.\n\nRefresh and try again.",
-    "enter-display-name": "Please enter your display name:",
+    "enter-display-name": "Enter your name to join the class:",
     "enter-new-display-name": "Enter a new Display Name for this stream",
     "what-bitrate": "What bitrate would you like to record at? (kbps)\n\n - This remote guest will save the recording directly to their local disk.\n\n - The recording can fail, so have backup recordings going.\n\n - This record option does not use Internet bandwidth and offers a high quality recording",
     "enter-website": "Enter a website URL to share",

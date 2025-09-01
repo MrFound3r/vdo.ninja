@@ -4283,7 +4283,8 @@ div#roomnotes2 {
 }
 
 #hangupContainer {
-	font-size: 500%;
+	color: #fff;
+	font-size: 20px;
 	text-align: center;
 	margin: auto auto;
 	display: flex;

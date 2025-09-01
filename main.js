@@ -4934,13 +4934,13 @@ async function main() {
 					miniTranslate(getById("add_camera"), "join-room-with-mic", "Join Room with Microphone");
 				}
 			} else if (session.audioDevice === 0) {
-				miniTranslate(getById("add_camera"), "join-room-with-camera", "Join Room with Camera");
+				miniTranslate(getById("add_camera"), "join-room-with-camera", "Get ready to learn about STEAM");
 			} else if (session.optionalMicOnly) {
 				miniTranslate(getById("add_camera"), "join-room-with-video", "Join Room with Video");
 				miniTranslate(getById("add_microphone"), "join-room-with-mic-only", "Join Room with just Microphone");
 				getById("container-3a").classList.remove("hidden");
 			} else {
-				miniTranslate(getById("add_camera"), "join-room-with-camera", "Join Room with Camera");
+				miniTranslate(getById("add_camera"), "join-room-with-camera", "Get ready to learn about STEAM");
 			}
 			miniTranslate(getById("add_screen"), "share-screen-with-room", "Screenshare with Room");
 		} else {
