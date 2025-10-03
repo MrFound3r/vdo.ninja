@@ -129,7 +129,12 @@
 	border: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font-family: "Gill Sans MT Condensed", sans-serif;
 	font-weight: normal;
 }
@@ -711,7 +716,7 @@ button.hint {
 }
 
 #stickyMsgs:not(:empty) {
-	background-color: #999;
+	background-color: #fff;
 	color: #333a73;
 	width: 700px;
 	z-index: 7;
@@ -729,6 +734,7 @@ button.hint {
 	justify-content: center;
 	max-width: 100%;
 	min-height: 300px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .1);
 }
 
 #stickyMsgs * {
@@ -1455,7 +1461,7 @@ button.glyphicon-button.active.focus {
 	background-image: var(--background-main-image);
 	background-repeat: no-repeat;
 	background-attachment: fixed;
-	background-position: center;
+	background-position: top;
 	overflow-x: hidden;
 	position: absolute;
 	z-index: 0;
@@ -4346,7 +4352,7 @@ div#roomnotes2 {
 }
 
 #hangupContainer {
-	background-color: #999;
+	background-color: #fff;
 	color: #333a73;
 	font-size: 20px;
 	text-align: center;
@@ -4362,6 +4368,7 @@ div#roomnotes2 {
 	max-width: 100%;
 	min-height: 300px;
 	padding: 2% 3%;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .1);
 }
 
 #hangupContainer * {
@@ -4540,6 +4547,7 @@ a#reshare {
 
 #joinroomID+button {
 	margin: 0px var(--regular-margin);
+	padding: 10px 20px;
 }
 
 #joinbyURL {
