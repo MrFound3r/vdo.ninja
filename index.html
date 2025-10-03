@@ -132,7 +132,6 @@
 			<div id="head6" class="hidden" data-translate="only-director-can-hear-you">Only the director can hear you currently.</div>
 			<div id="head7" class="hidden" data-translate="director-muted-you">The director has muted you.</div>
 			<div id="head8" class="hidden" data-translate="director-video-muted-you">The director has disabled your camera temporarily.</div>
-
 		</div>
 		<div id="obsState" class="hidden">ACTIVE</div>
 		<div id="controlButtons" class="hidden">
@@ -262,7 +261,6 @@
 			</span>
 		</span>
 		<div id="mainmenu" class="row" style="opacity: 0">
-			
 			<div id="container-1" title="Add Group Chat to OBS" alt="Add Group Chat to OBS" tabindex="1" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" class="column columnfade pointer rounded card" style="overflow-y: auto">
 				<h2>
 					<span data-translate="add-group-chat">Create a Room</span>
@@ -379,182 +377,185 @@
 			</div>
 			<div id="container-3" title="Add your Camera to OBS" onkeyup="enterPressedClick(event,this);" alt="Add your Camera to OBS" tabindex="1" role="button" aria-pressed="false" class="column columnfade pointer rounded card" onclick="previewWebcam()" style="overflow-y: auto">
 				<h2 id="add_camera">
-					<span >Get ready to learn about STEAM</span>
+					<span>Get ready to learn about STEAM</span>
 				</h2>
 				<div class="container-inner" id="add_camera_inner">
 					<br />
 					<p>
 						<video id="previewWebcam" class="previewWebcam task" aria-hidden="true" title="Right-click this video for additional options" data-menu="context-menu-video" oncanplay="updateStats();" controlsList="nodownload" muted autoplay playsinline></video>
 					</p>
-					<div id="infof"></div>
-					<button onclick="this.disabled=true;setTimeout(function(){requestBasicPermissions();},20);" id="getPermissions" style="display: none" data-ready="false">
-						<span data-translate="ask-for-permissions">Allow Access to Camera/Microphone</span>
-					</button>
+					<div class="container-options">
+						<div id="infof"></div>
+						<button onclick="this.disabled=true;setTimeout(function(){requestBasicPermissions();},20);" id="getPermissions" style="display: none" data-ready="false">
+							<span data-translate="ask-for-permissions">Allow Access to Camera/Microphone</span>
+						</button>
+
+						<div id="consentWarning" class="startupWarning hidden">
+							<i class="las la-exclamation-circle"></i>
+							<p><span data-translate="privacy-disabled">Privacy warning: The director will be able to remotely change your camera, microphone, and URL.</span></p>
+						</div>
+						<div id="guestTips" style="display: none" aria-hidden="true">
+							<p data-translate="for-the-best-possible-experience-make-sure">For the best possible experience, make sure</p>
+							<span><i class="las la-plug"></i><span data-translate="your-device-is-powered">Your device is powered</span></span>
+							<span><i class="las la-ethernet"></i><span data-translate="your-connection-is-hardwired-instead-of-wifi">Your connection is hardwired instead of wifi</span></span>
+							<span><i class="las la-headphones"></i><span data-translate="you-are-using-headphones-earphones">You are using headphones / earphones</span></span>
+						</div>
+						<div id="videoMenu" class="videoMenu" aria-hidden="true">
+							<div class="title"><i class="las la-video"></i><span data-translate="video-source"> Video Source </span></div>
+							<span style="display: inline-block; padding-top: 5px">
+								<select id="videoSourceSelect" tabindex="1" title="Video source list"></select>
+								<span id="gear_webcam" onclick="toggle(document.getElementById('videoSettings'));">
+									<i class="las la-cog" style="font-size: 140%; vertical-align: middle" aria-hidden="true"></i>
+								</span>
+							</span>
+							<div id="cameraTip1" class="cameraTip hidden">
+								<i class="las la-info-circle"></i>
+								<p><span id="cameraTipContext1"></span></p>
+							</div>
+						</div>
+						<br />
+						<center>
+							<div id="videoSettings" style="display: none" aria-hidden="true">
+								<form id="webcamquality">
+									<input type="radio" id="fullhd" alt="1080p60 video capture" name="resolution" value="0" />
+									<label for="fullhd">
+										<span data-translate="max-resolution">Max Resolution</span>
+									</label>
+									|
+
+									<input type="radio" checked id="halfhd" alt="720p60 video capture" name="resolution" value="1" />
+									<label for="halfhd">
+										<span data-translate="balanced">Balanced</span>
+									</label>
+									|
+
+									<input type="radio" id="nothd" name="resolution" alt="360p30 video capture" value="2" />
+									<label for="nothd">
+										<span data-translate="smooth-cool">Smooth and Cool</span>
+									</label>
+									<div id="webcamstats" style="padding: 5px 0 0 0"></div>
+								</form>
+							</div>
+						</center>
+						<div id="audioMenu" class="form-group multiselect" alt="tip: Hold CTRL (command) to select Multiple" title="tip: Hold CTRL (command) to select Multiple" aria-hidden="true">
+							<span class="gear_microphone hidden"> <input type="checkbox" id="micStereoMonoInput" alt="Mono microphone audio" onchange="toggleMonoStereoMic(this);" />Mono </span>
+							<a id="multiselect-trigger" class="form-control multiselect-trigger">
+								<div class="title">
+									<i class="las la-microphone-alt"></i><span data-translate="select-audio-source"> Audio Source(s) </span>
+									<i id="chevarrow1" class="chevron bottom" aria-hidden="true"></i>
+									<div class="meter" id="meter1"></div>
+									<div class="meter2" id="meter2"></div>
+								</div>
+							</a>
+							<ul id="audioSource" class="multiselect-contents">
+								<li>
+									<input type="checkbox" id="multiselect1" name="multiselect1" style="display: none" checked value="ZZZ" />
+									<label for="multiselect1">
+										<span data-translate="no-audio"> No Audio</span>
+									</label>
+								</li>
+							</ul>
+							<div id="audioTip1" class="cameraTip hidden">
+								<i class="las la-info-circle"></i>
+								<p><span id="audioTipContext1"></span></p>
+							</div>
+						</div>
+						<br style="line-height: 0" />
+						<div id="headphonesDiv" class="audioMenu" aria-hidden="true">
+							<div class="title"><i class="las la-headphones"></i><span data-translate="select-output-source"> Audio Output Destination</span><button onclick="playtone()" title="Play a sound out of the selected audio playback device" class="testtonebutton" type="button">Test</button></div>
+							<select id="outputSource" alt="Audio output device"></select>
+							<div id="headphoneTip1" class="cameraTip hidden">
+								<i class="las la-info-circle"></i>
+								<p><span id="headphoneTipContext1"></span></p>
+							</div>
+							<div id="audioTipSR" class="cameraTip hidden">
+								<i class="las la-exclamation-circle"></i>
+								<p><span id="audioTipContextSR"></span></p>
+							</div>
+						</div>
+						<br style="line-height: 0" />
+						<div id="avatarDiv" class="hidden" aria-hidden="true">
+							<div class="title"><i class="las la-robot"></i><span data-translate="select-avatar-image"> Default Avatar / Placeholder Image </span></div>
+							<div id="selectAvatarImage" style="margin-top: 10px">
+								<img src="./media/avatar.webp" crossorigin="Anonymous" loading="lazy" id="defaultAvatar1" style="max-width: 130px; max-height: 73.5px; display: inline-block; margin: 10px; cursor: pointer" onclick="changeAvatarImage(event, this);" />
+								<label class="selected" id="noAvatarSelected" style="width: 130px; display: inline-block; text-align: center; cursor: pointer">
+									<i class="las la-minus-circle" style="font-size: 3em"></i><br />No Image Selected
+									<button onclick="changeAvatarImage(event, this)" style="position: fixed; top: -100em; margin-left: 10px; border: 1px solid #555"></button>
+								</label>
+								<label style="width: 130px; display: inline-block; text-align: center; cursor: pointer">
+									<i class="las la-hdd" style="font-size: 3em"></i><br />Select Local Image
+									<input type="file" onchange="changeAvatarImage(event, this)" accept="image/*" style="position: fixed; top: -100em; margin-left: 10px; border: 1px solid #555" />
+								</label>
+							</div>
+						</div>
+						<br style="line-height: 0" />
+						<div id="effectsDiv" aria-hidden="true">
+							<div class="title"><i class="las la-robot"></i><span data-translate="select-digital-effect"> Digital Video Effects </span></div>
+							<select id="effectSelector" alt="Digital video effect options" onchange="effectsDynamicallyUpdate(event, this);">
+								<option value="0" data-translate="no-effects-applied">No effects applied</option>
+								track.getCapabilities().backgroundBlur
+								<option value="3" data-translate="blurred-background">Blurred background</option>
+								<option value="13" class="hidden" disabled data-translate="blurred-background-2">Blurred background 2 🧪</option>
+								<option value="4" data-translate="digital-greenscreen">Digital greenscreen</option>
+								<option value="5" data-translate="virtual-background">Virtual background</option>
+								<option value="6" data-translate="face-mesh" title="experimental">Face mesh (slow load) 👨‍🔬</option>
+								<option value="7" data-translate="digital-zoom">Digital zoom</option>
+								<option value="anon" data-translate="anonymous-mask" title="experimental">Anonymous mask 👨‍🔬</option>
+								<option value="dog" data-translate="dog-face" title="experimental">Dog ears and nose 👨‍🔬</option>
+								<option value="1" disabled title="Enable the Chrome experimental features flag to use: chrome://flags/#enable-experimental-web-platform-features" class="facetracker" data-translate="face-tracker">Face Tracker</option>
+							</select>
+							<span data-warnSimdNotice="true" style="display: none; font-size: 140%; margin-left: 10px; vertical-align: middle; cursor: pointer" title="Improve performance and quality with this tip" onclick="smdInfo();">
+								<i class="las la-info-circle"></i>
+							</span>
+							<span data-effectsNotice="true" style="display: none; font-size: 140%; margin-left: 10px; vertical-align: middle; cursor: pointer" title="Improve performance and quality with this tip" onclick="warnUser('Use a Chromium Based Browser');">
+								<i class="las la-info-circle"></i>
+							</span>
+
+							<div id="selectImageTFLITE" style="display: none; margin-top: 10px"></div>
+							<div id="selectEffectAmount" style="display: none; margin-top: 10px">
+								<label for="selectEffectAmountInput" style="width: 113px; display: inline-block">Effect Amount</label>
+								<input id="selectEffectAmountInput" style="display: inline-block; width: 350px; max-width: 60%; margin: 6px 0" name="selectEffectAmountInput" title="Adjust the amount of effect applied" type="range" oninput="changeEffectAmount(event, this)" onchange="changeEffectAmount(event, this)" min="0" step="1" max="20" />
+							</div>
+						</div>
+						<br style="line-height: 0" />
+						<div id="addPasswordBasic">
+							<div class="title" title="Add an optional password"><i class="las la-key"></i><span data-translate="add-a-password"> Add a Password</span></div>
+							<input type="text" id="passwordBasicInput" title="Enter an optional password here" placeholder="optional" />
+						</div>
+
+						<div id="SafariWarning" class="startupWarning hidden" aria-hidden="true" title="Consider using Chrome instead of Safari">
+							<i class="las la-exclamation-circle"></i>
+							<p>
+								<span data-translate="use-chrome-instead"
+									>Consider using a Chromium-based browser instead.<br />
+									Safari is more prone to having audio issues</span
+								>
+							</p>
+						</div>
+
+						<div id="oldiOSWarning" class="startupWarning hidden" title="Please update your version of iOS for best performance">
+							<i class="las la-exclamation-circle"></i>
+							<p>
+								<span data-translate="update-your-device">We've detected that you are using an old version of Apple iOS.<br /><br />Please consider updating if facing issues.</span>
+							</p>
+						</div>
+					</div>
+					<div style="margin: 10px auto" class="startupWarning">
+						<p>
+							Turn on your camera so your teacher can see you.
+							<br />
+							Turn on your microphone so everyone can hear you.
+							<br />
+							Check your speaker by pressing "Test"
+							<br />
+							When you're ready -> Click the green START button to join.
+						</p>
+					</div>
 					<span style="display: block">
 						<button onclick="publishWebcam(this)" title="start streaming" aria-label="Start streaming" role="button" aria-pressed="false" tabindex="1" id="gowebcam" class="gowebcam" alt="Start Streaming" disabled data-audioready="false" data-ready="false">
 							<span data-translate="waiting-for-camera">Waiting for Camera to Load</span>
 						</button>
 					</span>
-					<div id="consentWarning" class="startupWarning hidden">
-						<i class="las la-exclamation-circle"></i>
-						<p><span data-translate="privacy-disabled">Privacy warning: The director will be able to remotely change your camera, microphone, and URL.</span></p>
-					</div>
-					<div id="guestTips" style="display: none" aria-hidden="true">
-						<p data-translate="for-the-best-possible-experience-make-sure">For the best possible experience, make sure</p>
-						<span><i class="las la-plug"></i><span data-translate="your-device-is-powered">Your device is powered</span></span>
-						<span><i class="las la-ethernet"></i><span data-translate="your-connection-is-hardwired-instead-of-wifi">Your connection is hardwired instead of wifi</span></span>
-						<span><i class="las la-headphones"></i><span data-translate="you-are-using-headphones-earphones">You are using headphones / earphones</span></span>
-					</div>
-					<div id="videoMenu" class="videoMenu" aria-hidden="true">
-						<div class="title"><i class="las la-video"></i><span data-translate="video-source"> Video Source </span></div>
-						<span style="display: inline-block; padding-top: 5px">
-							<select id="videoSourceSelect" tabindex="1" title="Video source list"></select>
-							<span id="gear_webcam" onclick="toggle(document.getElementById('videoSettings'));">
-								<i class="las la-cog" style="font-size: 140%; vertical-align: middle" aria-hidden="true"></i>
-							</span>
-						</span>
-						<div id="cameraTip1" class="cameraTip hidden">
-							<i class="las la-info-circle"></i>
-							<p><span id="cameraTipContext1"></span></p>
-						</div>
-					</div>
-					<br />
-					<center>
-						<div id="videoSettings" style="display: none" aria-hidden="true">
-							<form id="webcamquality">
-								<input type="radio" id="fullhd" alt="1080p60 video capture" name="resolution" value="0" />
-								<label for="fullhd">
-									<span data-translate="max-resolution">Max Resolution</span>
-								</label>
-								|
-
-								<input type="radio" checked id="halfhd" alt="720p60 video capture" name="resolution" value="1" />
-								<label for="halfhd">
-									<span data-translate="balanced">Balanced</span>
-								</label>
-								|
-
-								<input type="radio" id="nothd" name="resolution" alt="360p30 video capture" value="2" />
-								<label for="nothd">
-									<span data-translate="smooth-cool">Smooth and Cool</span>
-								</label>
-								<div id="webcamstats" style="padding: 5px 0 0 0"></div>
-							</form>
-						</div>
-					</center>
-					<div id="audioMenu" class="form-group multiselect" alt="tip: Hold CTRL (command) to select Multiple" title="tip: Hold CTRL (command) to select Multiple" aria-hidden="true">
-						<span class="gear_microphone hidden"> <input type="checkbox" id="micStereoMonoInput" alt="Mono microphone audio" onchange="toggleMonoStereoMic(this);" />Mono </span>
-						<a id="multiselect-trigger" class="form-control multiselect-trigger">
-							<div class="title">
-								<i class="las la-microphone-alt"></i><span data-translate="select-audio-source"> Audio Source(s) </span>
-								<i id="chevarrow1" class="chevron bottom" aria-hidden="true"></i>
-								<div class="meter" id="meter1"></div>
-								<div class="meter2" id="meter2"></div>
-							</div>
-						</a>
-						<ul id="audioSource" class="multiselect-contents">
-							<li>
-								<input type="checkbox" id="multiselect1" name="multiselect1" style="display: none" checked value="ZZZ" />
-								<label for="multiselect1">
-									<span data-translate="no-audio"> No Audio</span>
-								</label>
-							</li>
-						</ul>
-						<div id="audioTip1" class="cameraTip hidden">
-							<i class="las la-info-circle"></i>
-							<p><span id="audioTipContext1"></span></p>
-						</div>
-					</div>
-					<br style="line-height: 0" />
-					<div id="headphonesDiv" class="audioMenu" aria-hidden="true">
-						<div class="title"><i class="las la-headphones"></i><span data-translate="select-output-source"> Audio Output Destination</span><button onclick="playtone()" title="Play a sound out of the selected audio playback device" class="testtonebutton" type="button">Test</button></div>
-						<select id="outputSource" alt="Audio output device"></select>
-						<div id="headphoneTip1" class="cameraTip hidden">
-							<i class="las la-info-circle"></i>
-							<p><span id="headphoneTipContext1"></span></p>
-						</div>
-						<div id="audioTipSR" class="cameraTip hidden">
-							<i class="las la-exclamation-circle"></i>
-							<p><span id="audioTipContextSR"></span></p>
-						</div>
-					</div>
-					<br style="line-height: 0" />
-					<div id="avatarDiv" class="hidden" aria-hidden="true">
-						<div class="title"><i class="las la-robot"></i><span data-translate="select-avatar-image"> Default Avatar / Placeholder Image </span></div>
-						<div id="selectAvatarImage" style="margin-top: 10px">
-							<img src="./media/avatar.webp" crossorigin="Anonymous" loading="lazy" id="defaultAvatar1" style="max-width: 130px; max-height: 73.5px; display: inline-block; margin: 10px; cursor: pointer" onclick="changeAvatarImage(event, this);" />
-							<label class="selected" id="noAvatarSelected" style="width: 130px; display: inline-block; text-align: center; cursor: pointer">
-								<i class="las la-minus-circle" style="font-size: 3em"></i><br />No Image Selected
-								<button onclick="changeAvatarImage(event, this)" style="position: fixed; top: -100em; margin-left: 10px; border: 1px solid #555"></button>
-							</label>
-							<label style="width: 130px; display: inline-block; text-align: center; cursor: pointer">
-								<i class="las la-hdd" style="font-size: 3em"></i><br />Select Local Image
-								<input type="file" onchange="changeAvatarImage(event, this)" accept="image/*" style="position: fixed; top: -100em; margin-left: 10px; border: 1px solid #555" />
-							</label>
-						</div>
-					</div>
-					<br style="line-height: 0" />
-					<div id="effectsDiv" aria-hidden="true">
-						<div class="title"><i class="las la-robot"></i><span data-translate="select-digital-effect"> Digital Video Effects </span></div>
-						<select id="effectSelector" alt="Digital video effect options" onchange="effectsDynamicallyUpdate(event, this);">
-							<option value="0" data-translate="no-effects-applied">No effects applied</option>
-							track.getCapabilities().backgroundBlur
-							<option value="3" data-translate="blurred-background">Blurred background</option>
-							<option value="13" class="hidden" disabled data-translate="blurred-background-2">Blurred background 2 🧪</option>
-							<option value="4" data-translate="digital-greenscreen">Digital greenscreen</option>
-							<option value="5" data-translate="virtual-background">Virtual background</option>
-							<option value="6" data-translate="face-mesh" title="experimental">Face mesh (slow load) 👨‍🔬</option>
-							<option value="7" data-translate="digital-zoom">Digital zoom</option>
-							<option value="anon" data-translate="anonymous-mask" title="experimental">Anonymous mask 👨‍🔬</option>
-							<option value="dog" data-translate="dog-face" title="experimental">Dog ears and nose 👨‍🔬</option>
-							<option value="1" disabled title="Enable the Chrome experimental features flag to use: chrome://flags/#enable-experimental-web-platform-features" class="facetracker" data-translate="face-tracker">Face Tracker</option>
-						</select>
-						<span data-warnSimdNotice="true" style="display: none; font-size: 140%; margin-left: 10px; vertical-align: middle; cursor: pointer" title="Improve performance and quality with this tip" onclick="smdInfo();">
-							<i class="las la-info-circle"></i>
-						</span>
-						<span data-effectsNotice="true" style="display: none; font-size: 140%; margin-left: 10px; vertical-align: middle; cursor: pointer" title="Improve performance and quality with this tip" onclick="warnUser('Use a Chromium Based Browser');">
-							<i class="las la-info-circle"></i>
-						</span>
-
-						<div id="selectImageTFLITE" style="display: none; margin-top: 10px"></div>
-						<div id="selectEffectAmount" style="display: none; margin-top: 10px">
-							<label for="selectEffectAmountInput" style="width: 113px; display: inline-block">Effect Amount</label>
-							<input id="selectEffectAmountInput" style="display: inline-block; width: 350px; max-width: 60%; margin: 6px 0" name="selectEffectAmountInput" title="Adjust the amount of effect applied" type="range" oninput="changeEffectAmount(event, this)" onchange="changeEffectAmount(event, this)" min="0" step="1" max="20" />
-						</div>
-					</div>
-					<br style="line-height: 0" />
-					<div id="addPasswordBasic">
-						<div class="title" title="Add an optional password"><i class="las la-key"></i><span data-translate="add-a-password"> Add a Password</span></div>
-						<input type="text" id="passwordBasicInput" title="Enter an optional password here" placeholder="optional" />
-					</div>
-
-					<div id="SafariWarning" class="startupWarning hidden" aria-hidden="true" title="Consider using Chrome instead of Safari">
-						<i class="las la-exclamation-circle"></i>
-						<p>
-							<span data-translate="use-chrome-instead"
-								>Consider using a Chromium-based browser instead.<br />
-								Safari is more prone to having audio issues</span
-							>
-						</p>
-					</div>
-
-					<div id="oldiOSWarning" class="startupWarning hidden" title="Please update your version of iOS for best performance">
-						<i class="las la-exclamation-circle"></i>
-						<p>
-							<span data-translate="update-your-device">We've detected that you are using an old version of Apple iOS.<br /><br />Please consider updating if facing issues.</span>
-						</p>
-					</div>
-					<div style="margin: 20px auto" class="startupWarning">
-						<p>
-							Turn on your camera so your teacher can see you.
-							<br>
-							Turn on your microphone so everyone can hear you.
-							<br>
-							Check your speaker by pressing "Test"
-							<br>
-							When you're ready -> Click the green START button to join.
-						</p>
-					</div>
 				</div>
 				<div class="outer close" role="button" aria-pressed="false" title="Go back">
 					<div class="inner">
@@ -591,57 +592,60 @@
 					<span id="gear_screen" style="display: inline-block; cursor: pointer" onclick="toggle(document.getElementById('videoSettings2'));">
 						<i class="las la-cog" style="font-size: 170%; vertical-align: middle" aria-hidden="true"></i>
 					</span>
-					<center>
-						<span id="videoSettings2" style="display: none">
-							<form id="webcamquality2">
-								<input type="radio" id="fullhd2" name="resolution2" value="0" />
-								<label for="fullhd">
-									<span data-translate="max-resolution">1080p (hi-def)</span>
-								</label>
-								&nbsp;&nbsp;|&nbsp;&nbsp;
 
-								<input type="radio" checked id="halfhd2" name="resolution2" value="1" />
-								<label for="halfhd">
-									<span data-translate="balanced">720p (balanced)</span>
-								</label>
-								&nbsp;&nbsp;|&nbsp;&nbsp;
+					<div class="container-options">
+						<center>
+							<span id="videoSettings2" style="display: none">
+								<form id="webcamquality2">
+									<input type="radio" id="fullhd2" name="resolution2" value="0" />
+									<label for="fullhd">
+										<span data-translate="max-resolution">1080p (hi-def)</span>
+									</label>
+									&nbsp;&nbsp;|&nbsp;&nbsp;
 
-								<input type="radio" id="nothd2" name="resolution2" value="2" />
-								<label for="nothd">
-									<span data-translate="smooth-cool">360p (smooth)</span>
-								</label>
-								<div id="webcamstats2"></div>
-							</form>
-						</span>
-					</center>
-					<div id="consentWarning2" class="startupWarning hidden">
-						<i class="las la-exclamation-circle"></i>
-						<p><span data-translate="privacy-disabled">Privacy warning: The director will be able to remotely change your camera, microphone, and URL while this page is open, if you continue.</span></p>
-					</div>
-					<div id="audioScreenShare1">
-						<div class="title">
-							<i class="las la-microphone-alt"></i>
-							<span data-translate="audio-sources">Audio Sources</span>
+									<input type="radio" checked id="halfhd2" name="resolution2" value="1" />
+									<label for="halfhd">
+										<span data-translate="balanced">720p (balanced)</span>
+									</label>
+									&nbsp;&nbsp;|&nbsp;&nbsp;
+
+									<input type="radio" id="nothd2" name="resolution2" value="2" />
+									<label for="nothd">
+										<span data-translate="smooth-cool">360p (smooth)</span>
+									</label>
+									<div id="webcamstats2"></div>
+								</form>
+							</span>
+						</center>
+						<div id="consentWarning2" class="startupWarning hidden">
+							<i class="las la-exclamation-circle"></i>
+							<p><span data-translate="privacy-disabled">Privacy warning: The director will be able to remotely change your camera, microphone, and URL while this page is open, if you continue.</span></p>
 						</div>
-						<select id="audioSourceScreenshare" multiple alt="tip: Hold CTRL (command) to select Multiple" title="tip: Hold CTRL (command) to select Multiple" onchange="requestAudioStream();">
-							<option value="screenshare" selected>Screen Share Audio (default)</option>
-							<option value="microphones">Other Audio Sources</option>
-						</select>
-					</div>
-					<br />
-					<div id="headphonesDiv2">
-						<div class="title">
-							<i class="las la-headphones"></i>
-							<span data-translate="select-output-source"> Audio Output Destination: </span>
-							<button onclick="playtone(true)" class="testtonebutton" style="padding: 3px 5px 2px 5px; margin: 0; margin-left: 15px; position: relative" type="button">Test</button>
+						<div id="audioScreenShare1">
+							<div class="title">
+								<i class="las la-microphone-alt"></i>
+								<span data-translate="audio-sources">Audio Sources</span>
+							</div>
+							<select id="audioSourceScreenshare" multiple alt="tip: Hold CTRL (command) to select Multiple" title="tip: Hold CTRL (command) to select Multiple" onchange="requestAudioStream();">
+								<option value="screenshare" selected>Screen Share Audio (default)</option>
+								<option value="microphones">Other Audio Sources</option>
+							</select>
 						</div>
-						<select id="outputSourceScreenshare" onclick="requestOutputAudioStream();">
-							<option value="default">Default Device</option>
-						</select>
+						<br />
+						<div id="headphonesDiv2">
+							<div class="title">
+								<i class="las la-headphones"></i>
+								<span data-translate="select-output-source"> Audio Output Destination: </span>
+								<button onclick="playtone(true)" class="testtonebutton" style="padding: 3px 5px 2px 5px; margin: 0; margin-left: 15px; position: relative" type="button">Test</button>
+							</div>
+							<select id="outputSourceScreenshare" onclick="requestOutputAudioStream();">
+								<option value="default">Default Device</option>
+							</select>
+						</div>
+						<br />
+						<div id="audioScreenCaptureDocs" data-translate="application-audio-capture">For application-specific audio capture, <a href="https://docs.vdo.ninja/audio" target="_blank">see here</a></div>
+						<div id="audioScreenCaptureDocs2" data-translate="1080p-screen-capture-guide">For achieving 1080p60 game-capture, <a href="https://docs.vdo.ninja/guides/how-to-screen-share-in-1080p" target="_blank">see here</a></div>
 					</div>
-					<br />
-					<div id="audioScreenCaptureDocs" data-translate="application-audio-capture">For application-specific audio capture, <a href="https://docs.vdo.ninja/audio" target="_blank">see here</a></div>
-					<div id="audioScreenCaptureDocs2" data-translate="1080p-screen-capture-guide">For achieving 1080p60 game-capture, <a href="https://docs.vdo.ninja/guides/how-to-screen-share-in-1080p" target="_blank">see here</a></div>
 				</div>
 				<div class="outer close" title="Go back">
 					<div class="inner">
@@ -779,7 +783,7 @@
 
 			<div id="dropButton" onclick="dropDownButtonAction()" title="More Options" aria-hidden="true"><i class="las la-chevron-down"></i></div>
 
-			<div id="container-5" class="column columnfade pointer rounded card hidden" style="overflow-y: auto">
+			<!-- <div id="container-5" class="column columnfade pointer rounded card hidden" style="overflow-y: auto">
 				<h2><span data-translate="share-local-video-file">Stream Media File</span></h2>
 				<div class="container-inner">
 					<br /><br />
@@ -810,9 +814,9 @@
 						</label>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
-			<div id="container-6" class="column columnfade pointer rounded card hidden" style="overflow-y: auto">
+			<!-- <div id="container-6" class="column columnfade pointer rounded card hidden" style="overflow-y: auto">
 				<h2><span data-translate="share-website-iframe">Share Website</span></h2>
 				<i style="margin-top: 30px; font-size: 560%; overflow: hidden" class="largeDarkIcon las la-broadcast-tower"></i>
 				<div class="container-inner">
@@ -840,7 +844,7 @@
 						</label>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<div id="container-7" class="column columnfade pointer rounded card hidden" style="overflow: hidden" onclick="window.location = './speedtest.html';">
 				<h2><span data-translate="run-a-speed-test">Run a Speed Test</span></h2>
@@ -887,12 +891,12 @@
 				<i style="margin-top: 30px; font-size: 600%; overflow: hidden" class="largeDarkIcon las la-heartbeat"></i>
 			</div>
 
-			<div id="container-17" class="column columnfade pointer rounded card hidden" style="overflow: hidden" onclick="window.location = './whip';">
+			<!-- <div id="container-17" class="column columnfade pointer rounded card hidden" style="overflow: hidden" onclick="window.location = './whip';">
 				<h2><span data-translate="publish-via-whip">Publish via WHIP</span></h2>
 				<i style="margin-top: 30px; font-size: 600%; overflow: hidden" class="largeDarkIcon las la-broadcast-tower"></i>
-			</div>
+			</div> -->
 
-			<div id="container-16" class="column columnfade pointer rounded card hidden" style="overflow-y: auto">
+			<!-- <div id="container-16" class="column columnfade pointer rounded card hidden" style="overflow-y: auto">
 				<h2><span data-translate="share-whepsrc">Share via WHEP</span></h2>
 				<i style="margin-top: 30px; font-size: 560%; overflow: hidden" class="largeDarkIcon las la-broadcast-tower"></i>
 				<div class="container-inner">
@@ -919,7 +923,7 @@
 						</label>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 			<p></p>
 
@@ -938,9 +942,9 @@
 			<form method="post" onsubmit="setFormSubmitting()" style="display: none" aria-hidden="true">
 				<input type="submit" />
 			</form>
-			<div id="credits" class="credits" aria-hidden="true">
+			<!-- <div id="credits" class="credits" aria-hidden="true">
 				<a href="https://github.com/steveseguin/vdoninja" aria-hidden="true">VDO.Ninja, by Steve Seguin</a>
-			</div>
+			</div> -->
 		</div>
 		<div id="directorlayout" class="hidden directorsgrid">
 			<div id="roomHeader" style="display: none">
@@ -2424,9 +2428,13 @@
 		</div>
 		<span class="hidden" id="hangupTemplate">
 			<span id="hangupContainer">
-				You did amazing today!<br />
-				Keep practicing, and we'll have even more fun in the next class.<br /><br />
-				<button onClick="parent.location.reload();" title="Reload the page" data-translate="reload-page">Refresh</button>
+				<h2>
+					You did amazing today!
+				</h2>
+				<h4>
+					Keep practicing, and we'll have even more fun in the next class.
+				</h4>
+				<button style="width: fit-content; margin: 10px auto; color: #fff" onClick="parent.location.reload();" title="Reload the page" data-translate="reload-page">Refresh</button>
 			</span>
 		</span>
 		<div id="meshcastMenu" class="hidden">

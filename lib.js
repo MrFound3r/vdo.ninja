@@ -82,7 +82,7 @@ var miscTranslations = { // i can replace this list from time to time from the g
     "enter-password-2": "Please enter the password below: \n\n(Note: Passwords are case-sensitive.)",
     "enter-director-password": "Please enter the director's password:\n\n(Note: Passwords are case-sensitive and you will not be alerted if it is incorrect.)",
     "password-incorrect": "The password was incorrect.\n\nRefresh and try again.",
-    "enter-display-name": "Enter your name to join the class:",
+    "enter-display-name": "<h2 style='color: #333a73'>Enter your name to join the class</h2><br>Please enter your display name",
     "enter-new-display-name": "Enter a new Display Name for this stream",
     "what-bitrate": "What bitrate would you like to record at? (kbps)\n\n - This remote guest will save the recording directly to their local disk.\n\n - The recording can fail, so have backup recordings going.\n\n - This record option does not use Internet bandwidth and offers a high quality recording",
     "enter-website": "Enter a website URL to share",
@@ -845,8 +845,8 @@ async function promptAlt(inputText, block=false, asterix=false, value=false, tim
 							<input type='checkbox' id="countup_${promptID}" style="margin-left:30px" title="Count up from 0 instead" data-pid="${promptID}" /> Count up from zero instead
 						</span>
 						<br /><br />
-						<button id="submit_${promptID}" data-pid="${promptID}" style="width:120px; background-color: #fff; position: relative;border: 1px solid #999; margin: 0 0 0 30px" data-translate='ok'>✔ OK</button>
-						<button id="cancel_${promptID}" data-pid="${promptID}" style="width:120px; background-color: #fff; position: relative;border: 1px solid #999; margin: 0;" data-translate='cancel'>❌ Cancel</button>
+						<button id="submit_${promptID}" data-pid="${promptID}" style="width:120px; position: relative;border: 1px solid #999; margin: 0 0 0 30px" data-translate='ok'>✔ OK</button>
+						<button id="cancel_${promptID}" data-pid="${promptID}" style="width:120px; position: relative;border: 1px solid #999; margin: 0;" data-translate='cancel'>❌ Cancel</button>
 						<br /><br />
 					</div>
 				</div>
@@ -863,8 +863,8 @@ async function promptAlt(inputText, block=false, asterix=false, value=false, tim
 							<input id="input_${promptID}_dbx" title="Upload to Dropbox also"  data-pid="${promptID}" type="checkbox" /> Upload to your Drop Box
 						</span>
 						<br /><br />
-						<button id="submit_${promptID}" data-pid="${promptID}" style="width:120px; background-color: #fff; position: relative;border: 1px solid #999; margin: 0 0 0 55px;" data-translate='ok'>✔ OK</button>
-						<button id="cancel_${promptID}" data-pid="${promptID}" style="width:120px; background-color: #fff; position: relative;border: 1px solid #999; margin: 0;" data-translate='cancel'>❌ Cancel</button>
+						<button id="submit_${promptID}" data-pid="${promptID}" style="width:120px; position: relative;border: 1px solid #999; margin: 0 0 0 0;" data-translate='ok'>✔ OK</button>
+						<button id="cancel_${promptID}" data-pid="${promptID}" style="width:120px; position: relative;border: 1px solid #999; margin: 0;" data-translate='cancel'>❌ Cancel</button>
 					</div>
 				</div>
 				<div id="modalBackdrop_${promptID}" class="${backdropClass}" style="z-index:${zindex + 1}"></div>`;
@@ -893,8 +893,8 @@ async function promptAlt(inputText, block=false, asterix=false, value=false, tim
 						<span id="close_${promptID}" class='modalClose' data-pid="${promptID}">×</span>
 						<span class='promptModalMessage'>${inputText}</span>
 						<input id="input_${promptID}" autocorrect="off" autocapitalize="none" data-pid="${promptID}"  type="${type}" class="largeTextEntry" />
-						<button id="submit_${promptID}" data-pid="${promptID}" style="width:120px; background-color: #fff; position: relative;border: 1px solid #999; margin: 0 0 0 55px;" data-translate='ok'>✔ OK</button>
-						<button id="cancel_${promptID}" data-pid="${promptID}" style="width:120px; background-color: #fff; position: relative;border: 1px solid #999; margin: 0;" data-translate='cancel'>❌ Cancel</button>
+						<button id="submit_${promptID}" data-pid="${promptID}" style="width: 200px; position: relative; margin: 10px 0 0 0px;" data-translate='ok'>✔ OK</button>
+						<button id="cancel_${promptID}" data-pid="${promptID}" style="width: 200px; position: relative; margin: 10px 0 0 0px;" data-translate='cancel'>CANCEL</button>
 					</div>
 				</div>
 				<div id="modalBackdrop_${promptID}" class="${backdropClass}" style="z-index:${zindex + 1}"></div>`;
