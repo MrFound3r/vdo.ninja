@@ -1273,8 +1273,8 @@ async function confirmAlt(inputText, block=false){
 				<div class="promptModalInner">
 					<span id="close_${promptID}" class='modalClose' data-pid="${promptID}">×</span>
 					<span class='promptModalMessage' style='margin: 0 0 15px 0;'>${inputText}</span>
-					<button id="submit_${promptID}" data-pid="${promptID}" style="width:120px; background-color: #fff; position: relative;border: 1px solid #999; margin: 0 0 0 55px;" data-translate='ok'>✔ OK</button>
-					<button id="cancel_${promptID}" data-pid="${promptID}" style="width:120px; background-color: #fff; position: relative;border: 1px solid #999; margin: 0;" data-translate='cancel'>❌ Cancel</button>
+					<button id="submit_${promptID}" data-pid="${promptID}" style="width:120px; background-color: var(--background-color); position: relative;border: 1px solid #999; margin: 0;" data-translate='ok'>OK</button>
+					<button id="cancel_${promptID}" data-pid="${promptID}" style="width:120px; background-color: var(--background-color); position: relative;border: 1px solid #999; margin: 0;" data-translate='cancel'> Cancel</button>
 				</div>
 			</div>
 			<div id="modalBackdrop_${promptID}" class="${backdropClass}" style="z-index:${zindex + 1}"></div>`;
@@ -34622,6 +34622,16 @@ async function recordVideo(target, event = null, videoKbps = false) { // event.c
 	
 	if (!video){return;}
 	
+	// Prevents recording if no consent is guiven
+	if(session.rpcs[UUID].label && session.rpcs[UUID].label.includes("- Consented")) {
+		console.log("Consent Granted to record for: ",session.rpcs[UUID].label);
+	} else {
+		// Log that this specific user was skipped due to missing consent
+		warnUser("The user did not consent to be recorded");
+		console.warn("Global record skipped (No consent given) for: ", session.rpcs[UUID].label);
+		return;
+	}
+
 	if (video.stopWriter){
 		video.stopWriter();
 		updateLocalRecordButton(UUID, -1);
@@ -36021,6 +36031,7 @@ function localGlobalRecordStart(){
 	});
 	recordLocalVideo("start"); // self
 }
+
 function localGlobalRecordStop(){
 	document.querySelectorAll('[data-action-type=\'recorder-local\']').forEach(target=>{
 		var UUID = target.dataset.UUID;

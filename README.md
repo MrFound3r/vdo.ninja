@@ -1,4 +1,3 @@
-
 ### ⚠ Notice! We've rebranded from OBS.Ninja to VDO.Ninja - all else is staying the same ✨
 
 <img src="https://user-images.githubusercontent.com/2575698/124821455-bbfec580-df3c-11eb-9641-3d036cdd6c41.png" data-canonical-src="https://user-images.githubusercontent.com/2575698/124821455-bbfec580-df3c-11eb-9641-3d036cdd6c41.png" width="200"  />
@@ -98,3 +97,10 @@ Thank you to everyone who has helped support this project so far. From the moder
 <a href="https://github.com/steveseguin/vdoninja/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=steveseguin/vdoninja" />
 </a>
+
+## Run a secure live server
+Run the command
+
+```
+live-server --https=sslcert.js 
+```

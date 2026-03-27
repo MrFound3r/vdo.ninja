@@ -6,6 +6,7 @@
  *  tree. Alternative licencing options can be made available on request.
  *
  */
+
 /*jshint esversion: 6 */
 async function main() {
 	// main asyncronous thread; mostly initializes the user settings.
@@ -71,7 +72,7 @@ async function main() {
 				getById("info").style.display = "none";
 				getById("info").style.opacity = 0;
 				getById("chatBody").innerHTML = "";
-			} catch (e) {}
+			} catch (e) { }
 		} else if (session.label === false) {
 			document.title = location.hostname;
 		}
@@ -231,7 +232,7 @@ async function main() {
 				};
 			}
 			//ipcRenderer.sendSync('prompt', {title, val}); // call now -- but why?
-		} catch (e) {}
+		} catch (e) { }
 	}
 
 	if (window.electronApi && window.electronApi.exposeDoSomethingInWebApp) {
@@ -285,7 +286,7 @@ async function main() {
 		if (avatarImg) {
 			try {
 				avatarImg = decodeURIComponent(avatarImg);
-			} catch (e) {}
+			} catch (e) { }
 			try {
 				let fallbackImage = new Image();
 				fallbackImage.src = avatarImg;
@@ -296,7 +297,7 @@ async function main() {
 						document.documentElement.style.setProperty("--video-background-image-size", "contain");
 					}
 				};
-			} catch (e) {}
+			} catch (e) { }
 		}
 	}
 	if (urlParams.has("avatarimg2") || urlParams.has("bgimage2") || urlParams.has("bgimg2")) {
@@ -305,7 +306,7 @@ async function main() {
 		if (avatarImg2) {
 			try {
 				avatarImg2 = decodeURIComponent(avatarImg2);
-			} catch (e) {}
+			} catch (e) { }
 			try {
 				let fallbackImage2 = new Image();
 				fallbackImage2.src = avatarImg2;
@@ -321,7 +322,7 @@ async function main() {
 				if (session.showControls === null) {
 					session.showControls = false;
 				}
-			} catch (e) {}
+			} catch (e) { }
 		}
 	}
 
@@ -331,7 +332,7 @@ async function main() {
 		if (avatarImg3) {
 			try {
 				avatarImg3 = decodeURIComponent(avatarImg3);
-			} catch (e) {}
+			} catch (e) { }
 			try {
 				let fallbackImage3 = new Image();
 				fallbackImage3.src = avatarImg3;
@@ -347,7 +348,7 @@ async function main() {
 				if (session.showControls === null) {
 					session.showControls = false;
 				}
-			} catch (e) {}
+			} catch (e) { }
 		}
 	}
 
@@ -357,11 +358,11 @@ async function main() {
 		if (background) {
 			try {
 				background = decodeURIComponent(background);
-			} catch (e) {}
+			} catch (e) { }
 			try {
 				background = 'url("' + background + '")';
 				document.documentElement.style.setProperty("--background-main-image", background);
-			} catch (e) {}
+			} catch (e) { }
 		}
 	}
 
@@ -372,7 +373,7 @@ async function main() {
 			try {
 				posterImage = decodeURIComponent(posterImage);
 				session.posterImage = posterImage;
-			} catch (e) {}
+			} catch (e) { }
 		}
 	}
 
@@ -380,7 +381,7 @@ async function main() {
 		// URL or data:base64 image. Becomes local to this viewer only.  This is like &avatar, but slightly different. Just CSS in this case
 		try {
 			document.getElementById("bigPlayButton").classList.add("hidden");
-		} catch (e) {}
+		} catch (e) { }
 	}
 
 	if (urlParams.has("whip") || urlParams.has("whipview")) {
@@ -397,7 +398,7 @@ async function main() {
 		if (session.whipOutput) {
 			try {
 				session.whipOutput = decodeURIComponent(session.whipOutput);
-			} catch (e) {}
+			} catch (e) { }
 			session.whipOutput = "https://cloudflare.vdo.ninja/" + session.whipOutput;
 		}
 	}
@@ -942,7 +943,7 @@ async function main() {
 		if (urlParams.get("humb64")) {
 			try {
 				htmlmessage = atob(htmlmessage);
-			} catch (e) {}
+			} catch (e) { }
 		}
 
 		try {
@@ -1585,10 +1586,10 @@ async function main() {
 			var base64Css = urlParams.get("base64css") || urlParams.get("b64css") || urlParams.get("cssbase64") || urlParams.get("cssb64");
 			try {
 				base64Css = atob(base64Css); // window.btoa(encodeURIComponent("#mainmenu{background-color: pink;}" ));
-			} catch (e) {}
+			} catch (e) { }
 			try {
 				base64Css = decodeURIComponent(base64Css); // window.btoa(encodeURIComponent("#mainmenu{background-color: pink; ❤" ));
-			} catch (e) {}
+			} catch (e) { }
 			var cssStyleSheet = document.createElement("style");
 			cssStyleSheet.innerText = base64Css;
 			document.querySelector("head").appendChild(cssStyleSheet);
@@ -1601,7 +1602,7 @@ async function main() {
 		var cssURL = urlParams.get("css");
 		try {
 			cssURL = decodeURI(cssURL);
-		} catch (e) {}
+		} catch (e) { }
 		if (cssURL.startsWith("http")) {
 			var cssStylesheet = document.createElement("link");
 			cssStylesheet.rel = "stylesheet";
@@ -1651,7 +1652,7 @@ async function main() {
 		} else if (avatar) {
 			try {
 				avatar = decodeURIComponent(avatar);
-			} catch (e) {}
+			} catch (e) { }
 
 			session.avatar = getById("defaultAvatar2");
 			session.avatar.ready = false;
@@ -1843,7 +1844,7 @@ async function main() {
 		var updateURLAsNeed = true;
 		if (session.label == null || session.label.length == 0) {
 			window.focus();
-			session.label = await promptAlt(getTranslation("enter-display-name"), true);
+			session.label = await promptAlt("Enter your name to join the class (Add your email if you want the recording to be sent. Ex: John - johndoe@mail.com)", true);
 		} else {
 			var updateURLAsNeed = false;
 			try {
@@ -2882,6 +2883,16 @@ async function main() {
 		session.consent = true;
 		getById("consentWarning").classList.remove("hidden");
 		getById("consentWarning2").classList.remove("hidden");
+
+		delayedStartupFuncs.push([async function () {
+			const agreed = await confirmAlt("Notice: This session is being recorded. Do you consent to being recorded?", true);
+
+			if (!agreed) {
+				warnUser("You declined recording consent. The Director will be notified and recording will be disabled for your feed.");
+			} else {
+				session.label = session.label + " - Consented";
+			}
+		}]);
 	}
 
 	if (urlParams.has("autojoin") || urlParams.has("autostart") || urlParams.has("aj") || urlParams.has("as")) {
@@ -3345,12 +3356,12 @@ async function main() {
 		if (urlParams.get("welcomeb64")) {
 			try {
 				session.welcomeMessage = atob(session.welcomeMessage);
-			} catch (e) {}
+			} catch (e) { }
 		}
 		try {
 			session.welcomeMessage = session.welcomeMessage.replace(/(\r\n|\n|\r)/gm, " ");
 			session.welcomeMessage = decodeURIComponent(session.welcomeMessage);
-		} catch (e) {}
+		} catch (e) { }
 	}
 
 	if (urlParams.has("welcomehtml")) {
@@ -3358,18 +3369,18 @@ async function main() {
 
 		try {
 			session.welcomeHTML = atob(session.welcomeHTML);
-		} catch (e) {}
+		} catch (e) { }
 		try {
 			session.welcomeHTML = session.welcomeHTML.replace(/(\r\n|\n|\r)/gm, " ");
 			session.welcomeHTML = decodeURIComponent(session.welcomeHTML);
-		} catch (e) {}
+		} catch (e) { }
 	}
 
 	if (urlParams.has("welcomeimage") || urlParams.has("welcomeimg")) {
 		session.welcomeImage = urlParams.get("welcomeimage") || urlParams.get("welcomeimg");
 		try {
 			session.welcomeImage = decodeURIComponent(session.welcomeImage);
-		} catch (e) {}
+		} catch (e) { }
 	}
 
 	if (urlParams.has("mixminus")) {
@@ -3570,7 +3581,7 @@ async function main() {
 						}
 					}
 				});
-			} catch (e) {}
+			} catch (e) { }
 		}
 
 		getById("headphonesDiv").style.display = "none";
@@ -3620,7 +3631,7 @@ async function main() {
 		// hide menu option
 		try {
 			document.queryselector('[data-action="ShowStats"]').parentNode.classList.add("hidden");
-		} catch (e) {}
+		} catch (e) { }
 	}
 
 	if (urlParams.has("statsinterval")) {
@@ -3703,7 +3714,7 @@ async function main() {
 			function (postURL) {
 				try {
 					uploadImageSnapshot(postURL);
-				} catch (e) {}
+				} catch (e) { }
 			},
 			session.postInterval * 1000,
 			postURL
@@ -4187,7 +4198,7 @@ async function main() {
 		if (session.sendframes) {
 			try {
 				session.sendframes = decodeURIComponent(session.sendframes);
-			} catch (e) {}
+			} catch (e) { }
 		} else {
 			session.sendframes = session.iframetarget || "*";
 		}
@@ -4539,7 +4550,7 @@ async function main() {
 					if (window.obsstudio) {
 						getById("unexpectedPushLink").classList.remove("hidden");
 					}
-				} catch (e) {}
+				} catch (e) { }
 			}
 		}
 	}
@@ -4840,7 +4851,7 @@ async function main() {
 			session.screensharequality = parseInt(session.screensharequality) || 0;
 			try {
 				getById("gear_screen").parentNode.removeChild(getById("gear_screen"));
-			} catch (e) {}
+			} catch (e) { }
 		}
 	}
 
@@ -4853,7 +4864,7 @@ async function main() {
 		session.screenShareLabel = urlParams.get("screensharelabel") || urlParams.get("sslabel");
 		try {
 			session.screenShareLabel = decodeURIComponent(session.screenShareLabel);
-		} catch (e) {}
+		} catch (e) { }
 		session.screenShareLabel = session.screenShareLabel.replace(/_/g, " ");
 	}
 
@@ -5006,7 +5017,7 @@ async function main() {
 					} else {
 						try {
 							session.directorPassword = decodeURIComponent(session.directorPassword);
-						} catch (e) {}
+						} catch (e) { }
 					}
 					if (session.directorPassword) {
 						session.directorPassword = sanitizePassword(session.directorPassword);
@@ -5302,7 +5313,7 @@ async function main() {
 					warnUser("SSL (https) is not enabled. This site will not work without it!<br /><br /><a href='https://" + window.location.host + window.location.pathname + window.location.search + "'>Try accessing the site from here instead.</a>", false, false);
 				}
 			}
-		} catch (e) {}
+		} catch (e) { }
 	} else {
 		try {
 			navigator.mediaDevices.ondevicechange = reconnectDevices;
@@ -5323,7 +5334,7 @@ async function main() {
 			if (session.autostart) {
 				showControl();
 			}
-		} catch (e) {}
+		} catch (e) { }
 	}
 
 	if (urlParams.has("experimental")) {
@@ -5983,7 +5994,7 @@ async function main() {
 					for (var i in session.pcs) {
 						stats.outbound_stats[i] = session.pcs[i].stats;
 					}
-				} catch (e) {}
+				} catch (e) { }
 				parent.postMessage(
 					{
 						stats: stats
@@ -6166,7 +6177,7 @@ async function main() {
 				session.manual = false;
 				try {
 					updateMixer();
-				} catch (e) {}
+				} catch (e) { }
 			} else if (e.data.automixer == false) {
 				session.manual = true;
 			}
@@ -6321,9 +6332,9 @@ async function main() {
 										for (const property in e.data.settings) {
 											try {
 												session.rpcs[i].videoElement[property] = e.data.settings[property];
-											} catch (e) {}
+											} catch (e) { }
 										}
-									} catch (e) {}
+									} catch (e) { }
 								}
 								if ("add" in e.data) {
 									try {
@@ -6337,7 +6348,7 @@ async function main() {
 									} catch (e) {
 										try {
 											session.rpcs[i].videoElement.parentNode.parentNode.removeChild(session.rpcs[i].videoElement.parentNode);
-										} catch (e) {}
+										} catch (e) { }
 									}
 								} else if ("replace" in e.data) {
 									// should allow for a cleaner cut between two video streams.
@@ -6348,7 +6359,7 @@ async function main() {
 												getById("gridlayout").removeChild(ele);
 											}
 										});
-									} catch (e) {}
+									} catch (e) { }
 								}
 							} catch (e) {
 								errorlog(e);
@@ -6397,7 +6408,7 @@ async function main() {
 									//msg.midi.c = e.channel;
 									//msg.midi.s = e.timestamp;
 								});
-							} catch (e) {}
+							} catch (e) { }
 						}
 					} else if (session.midiOut == parseInt(session.midiOut)) {
 						try {
@@ -6960,10 +6971,10 @@ async function main() {
 						}
 						//}
 					}
-				} catch (e) {}
+				} catch (e) { }
 			})
 			.catch(errorlog);
-	} catch (e) {}
+	} catch (e) { }
 
 	setTimeout(function () {
 		// lets lazy load the following..

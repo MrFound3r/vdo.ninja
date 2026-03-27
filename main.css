@@ -2903,7 +2903,7 @@ span[data-action-type="stats-graphs-details-container"]>span {
 .soloButton button {
 	margin: 5px 0px 0px 0px;
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.75);
-	background-color: #ecfaff;
+	background-color: var(--background-color);
 	border-radius: 2px;
 	width: 100%;
 }
