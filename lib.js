@@ -6064,7 +6064,7 @@ function updateMixerRun(e=false){  // this is the main auto-mixing code.  It's a
 					}
 					label.style.fontSize = parseInt(fontsize)+"px";
 				}
-				label.innerText = session.rpcs[vid.dataset.UUID].label;
+				label.innerText = session.rpcs[vid.dataset.UUID].label.replace("- Consented", "");
 				if (label.innerText){
 					//label.innerHTML = label.innerHTML.replace(/\\n/g,"<br />");
 					label.innerHTML = label.innerHTML.split("\\n").map(word => `<span>${word}</span>`).join(" ");
@@ -6108,7 +6108,7 @@ function updateMixerRun(e=false){  // this is the main auto-mixing code.  It's a
 					label.style.fontSize = parseInt(fontsize)+"px";
 				}
 				
-				label.innerText = sanitizeLabel(session.label);//.replace(/[\W]+/g,"_").replace(/_+/g, ' ');
+				label.innerText = sanitizeLabel(session.label).replace("- Consented", "");//.replace(/[\W]+/g,"_").replace(/_+/g, ' ');
 				
 				if (label.innerText){
 					label.innerHTML = label.innerHTML.split("\\n").map(word => `<span>${word}</span>`).join(" ");
@@ -17216,6 +17216,15 @@ async function createRoom(roomname = false) {
 	}
 	
 	pokeIframeAPI("create-room", roomname);
+
+	// Initial setup for room
+	document.querySelector('input[data-param="&l"]').click();
+	document.querySelector('input[data-param="&consent"]').click();
+	document.querySelector('input[data-param="&sl"]').click();
+	document.querySelector('input[data-param="&sas"]').click();
+	document.querySelector('input[data-param="&welcome"]').click();
+	document.querySelector('input[data-param="&hand"]').click();
+	document.querySelector('input[data-param="&avatar"]').click();
 }
 
 function copyVideoFrameToClipboard(videoElement, e=false) {
@@ -17791,7 +17800,7 @@ async function createRoomCallback(passAdd, passAdd2) {
 		getById("mutespeakerbutton").classList.remove("hidden");
 		getById("websitesharebutton").classList.remove("hidden");
 		//getById("screensharebutton").classList.remove("hidden");
-		
+		 
 		if (session.totalRoomBitrate){
 			getById("roomsettingsbutton").classList.remove("hidden");
 		}
@@ -37358,7 +37367,7 @@ function applyStyleEffect(UUID){
 			session.rpcs[UUID].canvasCtx.fillStyle = "rgb(0,0,0)";
 			session.rpcs[UUID].canvasCtx.textAlign = "center";
 			session.rpcs[UUID].canvasCtx.font = parseInt(session.rpcs[UUID].canvas.height/2.11)+"px Arial";
-			session.rpcs[UUID].canvasCtx.fillText(session.rpcs[UUID].label[0].toUpperCase(), parseInt(session.rpcs[UUID].canvas.width/2), parseInt(session.rpcs[UUID].canvas.height*2/3)); 
+			session.rpcs[UUID].canvasCtx.fillText("", parseInt(session.rpcs[UUID].canvas.width/2), parseInt(session.rpcs[UUID].canvas.height*2/3)); 
 		} else {
 			var tmp = getComputedStyle(document.querySelector(':root')).getPropertyValue('--video-background-image').split('"');
 			if (tmp.length===3){
