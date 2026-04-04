@@ -1844,7 +1844,7 @@ async function main() {
 		var updateURLAsNeed = true;
 		if (session.label == null || session.label.length == 0) {
 			window.focus();
-			session.label = await promptAlt("Enter your name to join the class (Add your email if you want the recording to be sent. Ex: John - johndoe@mail.com)", true);
+			session.label = await promptAlt("Enter your child’s name to join. Add your email if you’d like us to send you the recording.", true);
 		} else {
 			var updateURLAsNeed = false;
 			try {
@@ -2885,7 +2885,7 @@ async function main() {
 		getById("consentWarning2").classList.remove("hidden");
 
 		delayedStartupFuncs.push([async function () {
-			const agreed = await confirmAlt("Notice: This session is being recorded. Do you consent to being recorded?", true);
+			const agreed = await confirmAlt("Allow recording so we can send a short recap after class?", true);
 
 			if (!agreed) {
 				warnUser("You declined recording consent. The Director will be notified and recording will be disabled for your feed.");

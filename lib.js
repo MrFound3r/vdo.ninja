@@ -46,6 +46,7 @@ function errorlog(msg) {
 */
 ///////
 
+var serverApiUrl = "http://localhost:4000";
 
 var formSubmitting = true;
 var activatedPreview = false;
@@ -17141,7 +17142,7 @@ async function createRoom(roomname = false) {
 	}
 	log(roomname);
 	session.roomid = roomname;
-	
+
 	getById("dirroomid").innerHTML = decodeURIComponent(session.roomid);
 	getById("roomid").innerHTML = session.roomid;
 
@@ -17218,6 +17219,7 @@ async function createRoom(roomname = false) {
 	pokeIframeAPI("create-room", roomname);
 
 	// Initial setup for room
+	generateRoomUUID();
 	document.querySelector('input[data-param="&l"]').click();
 	document.querySelector('input[data-param="&consent"]').click();
 	document.querySelector('input[data-param="&sl"]').click();
@@ -17225,7 +17227,124 @@ async function createRoom(roomname = false) {
 	document.querySelector('input[data-param="&welcome"]').click();
 	document.querySelector('input[data-param="&hand"]').click();
 	document.querySelector('input[data-param="&avatar"]').click();
+
+	// Checks for new users
+	setTimeout(setupJoinDetector, 3000);
+
 }
+
+// ==========================================
+// --- CUSTOM UNIQUE ROOM ID GENERATOR ---
+// ==========================================
+function generateRoomUUID(forceNew = false) {
+    let existingUUID = sessionStorage.getItem("vdo_current_session_id");
+
+    // Only generate a new ID if forceNew is explicitly true, OR if no ID exists yet
+    if (forceNew === true || !existingUUID) {
+        var newUUID = (typeof crypto !== 'undefined' && crypto.randomUUID) 
+            ? crypto.randomUUID() 
+            : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        
+        session.roomUUID = newUUID;
+        sessionStorage.setItem("vdo_current_session_id", newUUID);
+        console.log("✅ NEW Unique Room ID Generated:", session.roomUUID);
+    } else {
+        // If forceNew is false and we already have an ID, just load it
+        session.roomUUID = existingUUID;
+        console.log("♻️ Loaded existing Room ID:", session.roomUUID);
+    }
+
+    // Automatically fill the VDO.Ninja room name box with the active ID
+    var roomInput = document.getElementById("videoname1");
+    if (roomInput && session.roomUUID) {
+        roomInput.value = session.roomUUID;
+    }
+
+    // Update the visual display text under the button
+    var displayElement = document.getElementById("customRoomIdDisplay");
+    if (displayElement && session.roomUUID) {
+        displayElement.innerText = "Session ID: " + session.roomUUID;
+    }
+}
+// ==========================================
+
+// ==========================================
+// --- CUSTOM: DETECT NEW STUDENT JOIN ---
+// ==========================================
+function setupJoinDetector() {
+    const videoGrid = document.getElementById("guestFeeds");
+
+    if (!videoGrid) {
+        console.warn("⚠️ Join Detector: Could not find #guestFeeds container. Will try again in 2 seconds.");
+        setTimeout(setupJoinDetector, 2000); 
+        return;
+    }
+
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.id && node.id.startsWith("videoContainer_") ) {
+                
+                    const guestUUID = node.id.replace("videoContainer_", "");
+
+                    setTimeout(() => {
+                        const guestInfo = session.pcs && session.pcs[guestUUID];
+                        if (!guestInfo) return;
+
+                        // Clean up the basic VDO tags
+                        let rawName = guestInfo.label || "Unknown Student";
+                        let cleanName = rawName.replace("- Consented", "").replace("(✅)", "").trim();
+                        
+                        let extractedEmail = "";
+                        // Standard Email Regular Expression
+                        const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i;
+                        
+                        const emailMatch = cleanName.match(emailRegex);
+                        if (emailMatch) {
+                            extractedEmail = emailMatch[0]; // Save the found email
+                            
+                            // Remove the email from the name string
+                            cleanName = cleanName.replace(extractedEmail, "");
+                        }
+
+                        // Clean up any leftover hyphens or spaces (e.g. "John Doe - " becomes "John Doe")
+                        cleanName = cleanName.replace(/^[-\s]+|[-\s]+$/g, "").trim();
+                        
+                        // Fallback if they ONLY entered an email
+                        if (cleanName.length === 0) cleanName = "Unknown Student";
+                        
+                        const roomID = session.roomUUID || session.roomid;
+
+                        console.log(`Student Joined: ${cleanName} | Email: ${extractedEmail || 'None'} (${guestUUID})`);
+
+                        fetch(`${serverApiUrl}/students/join`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                roomUuid: roomID,
+                                studentUuid: guestUUID,
+                                name: cleanName,
+                                email: extractedEmail || ""
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => console.log("DB Sync Success:", data))
+                        .catch(err => console.error("DB Sync Error:", err));
+                        // --------------------------------------------------
+
+                    }, 2000); 
+                }
+            });
+        });
+    });
+
+    observer.observe(videoGrid, { childList: true, subtree: true });
+    console.log("🕵️‍♂️ Join Detector Active: Watching #guestFeeds for new students...");
+}
+// ==========================================
 
 function copyVideoFrameToClipboard(videoElement, e=false) {
 	try{
@@ -34868,7 +34987,8 @@ async function recordVideo(target, event = null, videoKbps = false) { // event.c
 	});
 	
 	var filext = ".webm";
-	
+	var recordedBlobs = [];
+
 	let options = {};
 
 	if (videoKbps) {
@@ -34980,7 +35100,7 @@ async function recordVideo(target, event = null, videoKbps = false) { // event.c
 
 	function handleDataAvailable(event) {
 		if (event.data && event.data.size > 0) {
-			//recordedBlobs.push(event.data);
+			recordedBlobs.push(event.data);
 			try{
 				writer.write(event.data); ////////////
 				if (video.recording) {
@@ -35017,6 +35137,40 @@ async function recordVideo(target, event = null, videoKbps = false) { // event.c
 	
 	video.recorder.mediaRecorder.onstop = function(event) {
 		log("mediaRecorder stopped");
+
+		// ==========================================
+        // --- CUSTOM: UPLOAD TO EXPRESS SERVER ---
+        // ==========================================
+        const blob = new Blob(recordedBlobs, { type: options.mimeType || 'video/webm' });
+        
+        var formData = new FormData();
+        var finalFilename = filename + filext;
+        formData.append("file", blob, finalFilename);
+
+        const roomID = session.roomUUID || session.roomid;
+        console.log(`Uploading recording for: ${UUID} to room ${roomID}`);
+
+        fetch(`${serverApiUrl}/recording_upload`, { 
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log("✅ Upload complete. Server saved file as:", data.filePath);
+
+            return fetch(`${serverApiUrl}/students/${roomID}/${UUID}/video`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ videoUrl: data.filePath })
+            });
+        })
+        .then(res => res.json())
+        .then(dbData => {
+            console.log("✅ Database Synced: Video attached to student profile.");
+        })
+        .catch(err => console.error("❌ Upload/Sync Error:", err));
+        
+        recordedBlobs = [];
 	}
 
 	video.srcObject.onended = function(event) {
