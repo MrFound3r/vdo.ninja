@@ -46,7 +46,7 @@ function errorlog(msg) {
 */
 ///////
 
-var serverApiUrl = "http://localhost:4000";
+var serverApiUrl = "https://localhost:4000";
 
 var formSubmitting = true;
 var activatedPreview = false;
